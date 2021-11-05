@@ -1,0 +1,122 @@
+package com.capstone2.gymsbond.waist_hip_ratio;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build.VERSION;
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdRequest.Builder;
+import com.google.android.gms.ads.AdView;
+import com.capstone2.gymsbond.R;
+import com.capstone2.gymsbond.general.MyApplication;
+import com.capstone2.gymsbond.utils.GlobalFunction;
+import com.capstone2.gymsbond.utils.SharedPreferenceManager;
+import com.capstone2.gymsbond.utils.TypefaceManager;
+import com.zplesac.connectionbuddy.ConnectionBuddy;
+import com.zplesac.connectionbuddy.interfaces.NetworkRequestCheckListener;
+import java.io.PrintStream;
+
+
+public class Waist_Hip_Ratio_Result extends Activity {
+    String TAG = getClass().getSimpleName();
+    AdView adView;
+    Bundle extras;
+    GlobalFunction globalFunction;
+    String health_risk;
+    ImageView iv_close;
+    ImageView iv_imoji;
+    RelativeLayout rl_main;
+    SharedPreferenceManager sharedPreferenceManager;
+    TextView tv_ans_bmr;
+    TextView tv_ans_healthrisk;
+    TextView tv_whr_chart;
+    TypefaceManager typefaceManager;
+    Double whr;
+
+
+    public void attachBaseContext(Context context) {
+        super.attachBaseContext(uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper.wrap(context));
+    }
+
+
+    public void onCreate(@Nullable Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.popup_whr);
+        this.typefaceManager = new TypefaceManager(getAssets(), this);
+        this.sharedPreferenceManager = new SharedPreferenceManager(this);
+        this.globalFunction = new GlobalFunction(this);
+        this.adView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        this.rl_main = findViewById(R.id.rl_main);
+        this.iv_close = findViewById(R.id.iv_close);
+        this.iv_imoji = findViewById(R.id.iv_imoji);
+//        this.rl_main.setBackgroundResource(R.drawable.popup_background_gradient1);
+        this.globalFunction.sendAnalyticsData(this.TAG, this.TAG);
+        this.extras = getIntent().getExtras();
+        this.whr = Double.valueOf(this.extras.getString("whr"));
+        this.health_risk = this.extras.getString("health_risk");
+        this.tv_ans_bmr = findViewById(R.id.tv_ans_bmr);
+        this.tv_ans_healthrisk = findViewById(R.id.tv_ans_healthrisk);
+        this.tv_whr_chart = findViewById(R.id.tv_whr_chart);
+        this.tv_ans_bmr.setTypeface(this.typefaceManager.getLight());
+        this.tv_ans_healthrisk.setTypeface(this.typefaceManager.getLight());
+        this.tv_whr_chart.setTypeface(this.typefaceManager.getBold());
+        if (VERSION.SDK_INT >= 21) {
+            getWindow().addFlags(67108864);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        sb.append(this.whr);
+        Log.d("whr->", sb.toString());
+        StringBuilder sb2 = new StringBuilder();
+        sb2.append("");
+        sb2.append(this.health_risk);
+        Log.d("tv_ans_healthrisk->", sb2.toString());
+        TextView textView = this.tv_ans_bmr;
+        StringBuilder sb3 = new StringBuilder();
+        sb3.append(getString(R.string.whr_is));
+        sb3.append(" ");
+        sb3.append(this.whr);
+        textView.setText(sb3.toString());
+        TextView textView2 = this.tv_ans_healthrisk;
+        StringBuilder sb4 = new StringBuilder();
+        sb4.append(getString(R.string.health_risk));
+        sb4.append(" ");
+        sb4.append(this.health_risk);
+        textView2.setText(sb4.toString());
+        if (this.whr.doubleValue() <= 0.95d) {
+            this.iv_imoji.setImageResource(R.drawable.imogi_sad);
+        } else if (this.whr.doubleValue() <= 0.95d || this.whr.doubleValue() >= 1.0d) {
+            this.iv_imoji.setImageResource(R.drawable.imogi_unhappy);
+        } else {
+            this.iv_imoji.setImageResource(R.drawable.imoji_smile);
+        }
+        this.tv_whr_chart.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                int random = ((int) (Math.random() * 2.0d)) + 1;
+                PrintStream printStream = System.out;
+                StringBuilder sb = new StringBuilder();
+                sb.append("random_number==>");
+                sb.append(random);
+                printStream.println(sb.toString());
+                Waist_Hip_Ratio_Result.this.startActivity(new Intent(Waist_Hip_Ratio_Result.this, Waist_Hip_Ratio_Chart.class));
+            }
+        });
+        this.iv_close.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                Waist_Hip_Ratio_Result.this.onBackPressed();
+            }
+        });
+    }
+}

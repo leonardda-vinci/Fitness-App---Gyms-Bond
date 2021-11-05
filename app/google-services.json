@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "851996289891",
+    "project_id": "gymsbond-dcff1",
+    "storage_bucket": "gymsbond-dcff1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851996289891:android:e19ffcb76e6a342ccc0156",
+        "android_client_info": {
+          "package_name": "com.capstone2.gymsbond"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851996289891-hhf4tnb07q4f2kb3q22i4ddcnp932f2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB7dd-zinyWD_gP-A7XCd6jP6MlAPxUWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851996289891-hhf4tnb07q4f2kb3q22i4ddcnp932f2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
